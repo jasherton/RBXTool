@@ -1,2 +1,4 @@
 /*.zip
 /__pycache__
+/gitrelease.py
+/geninstall.bat
