@@ -345,5 +345,3 @@ def Main():
                     if not asset.isnumeric():
                         continue
                     uploader.PermitAudio(asset,csplit[1])
-
-Main()
