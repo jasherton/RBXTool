@@ -41,6 +41,10 @@ reup FileName PlaceID
     - publishes a file to the specified PlaceID
     - AssetIDs within the place will be replaced if found in "assets.txt"
 
+fix FileName (optional)FileName2
+    - replaces AssetIDs in the same way as reup but instead saves to file
+    - if FileName2 is not specified, it will default to "FileName_Fixed.rbxl"
+
 permit PlaceID SoundID(s)/FileName
     - gives permission for any number of SoundIDs to play
     - in the supplied PlaceID
@@ -77,9 +81,10 @@ def UploadWrapper(uploadPath):
         if cpath.name == "Thumbs.db":
             return
         if cpath.stem in AssetCheckDict:
-            res = input(cpath.stem + " already exists. Do you want to replace it? (Y/[N]) ").lower()
-            if res != "y":
-                return
+            return
+            #res = input(cpath.stem + " already exists. Do you want to replace it? (Y/[N]) ").lower()
+            #if res != "y":
+            #    return
         assetId = uploader.UploadFile(uploadPath)
         if assetId:
             print("Uploaded {0} ({1})".format(cpath.name,assetId))
@@ -192,6 +197,35 @@ def Main():
                 uploader.Publish(PlaceData=data,PlaceID=csplit[2])
             else:
                 uploader.Publish(csplit[1],csplit[2])
+        elif csplit[0] == "fix" and len(csplit) >= 2:
+            if not Path(csplit[1]).exists():
+                print("Invalid FileName")
+                continue
+            if Path("assets.txt").exists():
+                place = RobloxPlace(csplit[1])
+                f = open("assets.txt","r")
+                lines = f.readlines()
+                f.close()
+                
+                assets = []
+                for line in lines:
+                    if len(line) == 0:
+                        continue
+                    sep = line.split(" ")
+                    assets.append((sep[0],sep[1][1:len(sep[1])-1]))
+                
+                outPath = Path(csplit[1]).stem + "_Fixed.rbxl"
+                if len(csplit) > 2:
+                    outPath = csplit[2]
+                
+                place.ReplaceAssets(assets)
+                data = place.Save()
+                f = open(outPath,"wb+")
+                f.write(data)
+                f.close()
+                print("Replaced Assets")
+            else:
+                print("No Asset List")
         elif csplit[0] == "up" and len(csplit) == 2:
             UploadWrapper(csplit[1])
         elif csplit[0] == "check" and len(csplit) > 1:
