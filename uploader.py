@@ -402,7 +402,7 @@ def UploadDecal(filePath,maxRetry=60):
             AssetID = GetOperationAssetID(operation)
             attempts += 1
         return AssetID
-    print("Upload Failed")
+    print("Upload Failed ({})".format(Path(filePath).name))
     return None
 
 #get image id of decal or image
@@ -432,7 +432,7 @@ def UploadSound(filePath,maxRetry=60):
             AssetID = GetOperationAssetID(operation)
             attempts += 1
         return AssetID
-    print("Upload Failed")
+    print("Upload Failed ({})".format(Path(filePath).name))
     return None
 
 UploadRateLimitSeconds = 60
