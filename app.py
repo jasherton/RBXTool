@@ -18,7 +18,6 @@ if not Path(".git").exists():
         versionText = None
         if "app.py" in names:
             text = data.read("app.py").decode("utf-8")
-            text += "FileVersion = \"1000\""
             match = text.find("FileVersion = \"")
             if match != -1:
                 versionText = text[match+15:text.find("\"",match+16)]
