@@ -193,7 +193,7 @@ def Main():
                     if len(line) == 0:
                         continue
                     sep = line.split(" ")
-                    assets.append((sep[0],sep[1][1:len(sep[1])-1]))
+                    assets.append((sep[0],sep[1][1:len(sep[1])-2]))
                 
                 place.ReplaceAssets(assets)
                 data = place.Save()
@@ -216,7 +216,7 @@ def Main():
                     if len(line) == 0:
                         continue
                     sep = line.split(" ")
-                    assets.append((sep[0],sep[1][1:len(sep[1])-1]))
+                    assets.append((sep[0],sep[1][1:len(sep[1])-2]))
                 
                 outPath = Path(csplit[1]).stem + "_Fixed.rbxl"
                 if len(csplit) > 2:
