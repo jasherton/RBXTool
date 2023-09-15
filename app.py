@@ -5,7 +5,7 @@ import requests
 import json
 
 #Automatic Updating
-FileVersion = "3"
+FileVersion = "4"
 GitRepo = "https://api.github.com/repos/jasherton/RBXTool/releases/latest"
 
 if not Path(".git").exists():
