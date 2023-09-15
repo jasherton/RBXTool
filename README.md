@@ -4,7 +4,7 @@
 - Download Roblox Places
 - Auto-Replace Assets & Publish Places
 - Extract & Download Place Assets (Images/Audio)
-- Check Places for Archived Assets (Images/Audio)
+- Check Places for Archived/Invalid Assets (Images/Audio)
 - Bulk Upload Images and Audio
 - Bulk Configure Audio Permissions
 
