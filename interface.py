@@ -249,7 +249,7 @@ def Main():
                 place = RobloxPlace(csplit[1])
             
             sounds = place.GetAssets(["Source","SoundId"])
-            images = place.GetAssets(["Source","Image","Texture","SkyboxBk","SkyboxDn","SkyboxFt","SkyboxLf","SkyboxRt","SkyboxUp"])
+            images = place.GetAssets(["Source","Image","Texture","SkyboxBk","SkyboxDn","SkyboxFt","SkyboxLf","SkyboxRt","SkyboxUp","TextureId"])
             
             print("Total Assets: {}".format(len(sounds)+len(images)))
             
@@ -331,7 +331,7 @@ def Main():
                 os.mkdir(folderName)
             
             sounds = place.GetAssets(["Source","SoundId"])
-            images = place.GetAssets(["Source","Image","Texture","SkyboxBk","SkyboxDn","SkyboxFt","SkyboxLf","SkyboxRt","SkyboxUp"])
+            images = place.GetAssets(["Source","Image","Texture","SkyboxBk","SkyboxDn","SkyboxFt","SkyboxLf","SkyboxRt","SkyboxUp","TextureId"])
             print("Images: {}".format(len(images)))
             print("Sounds: {}".format(len(sounds)))
             if len(images) > 0:
