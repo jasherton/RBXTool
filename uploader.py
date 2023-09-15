@@ -34,6 +34,8 @@ iconURL = "https://thumbnails.roblox.com/v1/assets?assetIds={0}&returnPolicy=Pla
 
 session = requests.Session()
 
+session_public = requests.Session()
+
 DecalRequest = '''{
 "assetType":"Decal",
 "displayName":"Image",
@@ -153,6 +155,55 @@ def CheckAssets(assetList,OutFile=None):
         f.close()
     
     return badArray
+
+def VerifyAssets(assetList,PlaceID=None,Public=False):
+    global AssetRateClock
+    global AssetRateCount
+    
+    if Public:
+        session_public.headers.update({"Roblox-Place-Id":PlaceID})
+        session_public.headers.update({"User-Agent":"Roblox/WinInet"})
+        
+        for asset in assetList:
+            ClockDiff = time.perf_counter()-AssetRateClock
+            if AssetRateCount == AssetRateLimitCount-1 and ClockDiff < AssetRateLimitSeconds:
+                print("Rate Limit Reached. Waiting...")
+                time.sleep((AssetRateLimitSeconds-ClockDiff)+1)
+                AssetRateCount = 0
+            
+            if AssetRateCount == 0:
+                AssetRateClock = time.perf_counter()
+            AssetRateCount += 1
+            
+            res = session_public.get(assetInfoURL.format(asset))
+            if res.status_code != 200:
+                print("Not Allowed ({})".format(asset))
+                continue
+        
+        session_public.headers.update({"Roblox-Place-Id":None})
+        session_public.headers.update({"User-Agent":None})
+    else:
+        session.headers.update({"Roblox-Place-Id":PlaceID})
+        session.headers.update({"User-Agent":"Roblox/WinInet"})
+        
+        for asset in assetList:
+            ClockDiff = time.perf_counter()-AssetRateClock
+            if AssetRateCount == AssetRateLimitCount-1 and ClockDiff < AssetRateLimitSeconds:
+                print("Rate Limit Reached. Waiting...")
+                time.sleep((AssetRateLimitSeconds-ClockDiff)+1)
+                AssetRateCount = 0
+            
+            if AssetRateCount == 0:
+                AssetRateClock = time.perf_counter()
+            AssetRateCount += 1
+            
+            res = session.get(assetInfoURL.format(asset))
+            if res.status_code != 200:
+                print("Not Allowed ({})".format(asset))
+                continue
+        
+        session.headers.update({"Roblox-Place-Id":None})
+        session.headers.update({"User-Agent":None})
 
 def DownloadAssets(assetList,PlaceID=None,OutDir=None):
     global AssetRateClock

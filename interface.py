@@ -20,9 +20,13 @@ Commands List
 download PlaceID
     - downloads a roblox place that you have access to
 
-check FileName/PlaceID
+arc FileName/PlaceID
     - checks for any archived assets in a place
     - and writes them to a file
+    - affected by rate limiting
+
+ver FileName/PlaceID
+    - verifies that all assets in a place are valid
     - affected by rate limiting
 
 extract FileName/PlaceID (optional)PlaceID
@@ -232,7 +236,34 @@ def Main():
                 print("No Asset List")
         elif csplit[0] == "up" and len(csplit) == 2:
             UploadWrapper(csplit[1])
-        elif csplit[0] == "check" and len(csplit) > 1:
+        elif csplit[0] == "ver" and len(csplit) == 2:
+            place = None
+            
+            PlaceID = None
+            if csplit[1].isnumeric():
+                data = uploader.DownloadPlace(csplit[1],NoFile=True)
+                if not data:
+                    continue
+                place = RobloxPlace(data=data)
+                PlaceID = csplit[1]
+            else:
+                cpath = Path(csplit[1])
+                if not cpath.exists():
+                    print("Invalid FileName")
+                    continue
+                place = RobloxPlace(csplit[1])
+            
+            sounds = place.GetAssets(["Source","SoundId"])
+            images = place.GetAssets(["Source","Image","Texture","SkyboxBk","SkyboxDn","SkyboxFt","SkyboxLf","SkyboxRt","SkyboxUp","TextureId"])
+            
+            if len(images) > 0:
+                print("Checking Images...")
+                uploader.VerifyAssets(list(images),PlaceID=PlaceID,Public=True)
+            if len(sounds) > 0:
+                print("Checking Sounds...")
+                uploader.VerifyAssets(list(sounds),PlaceID=PlaceID)
+            print("Finished")
+        elif csplit[0] == "arc" and len(csplit) == 2:
             place = None
             outpath = Path(csplit[1]).stem+"_archived.txt"
             
