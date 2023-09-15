@@ -107,6 +107,7 @@ def UploadWrapper(uploadPath):
         files = glob.glob(str(cpath)+"/*.*")
         for file in files:
             UploadWrapper(file)
+        print("Finished Operation")
 
 ROBLOSECURITY = None
 
@@ -154,6 +155,9 @@ def Main():
     uploader.MakeKey(ROBLOSECURITY)
     UserInfo = uploader.GetUser(ROBLOSECURITY)
     os.system("cls")
+    if not UserInfo:
+        print("User Information Invalid; Account may be banned")
+        return
     print("Logged in as {0} ({1})".format(UserInfo["name"],UserInfo["id"]))
     print("Type help and press Enter to see a list of commands\n")
     
